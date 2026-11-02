@@ -180,10 +180,11 @@ function showOverlay(on){
 }
 // =========================
 
+const API = 'https://script.google.com/macros/s/AKfycbypK0_uDE60tQRHjY7pKThDhQpafZfX6F4l89AV75P7lbJlRy-4jkrCJzLfPk1lFrcg/exec';
+
 function api(action, data){
-  if (!(window.google && google.script && google.script.run)) return Promise.reject(new Error("Buka halaman ini lewat link Web App."));
-  return new Promise((ok, no) => google.script.run.withSuccessHandler(ok).withFailureHandler(no)
-    .handle(JSON.stringify({action, sess, ...data})));
+  return fetch(API, {method:'POST', body: JSON.stringify({action, sess, ...data})})
+    .then(r => r.json());
 }
 
 function start(rows){
