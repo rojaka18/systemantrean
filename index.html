@@ -1,15 +1,333 @@
-<!doctype html><html lang="id"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DepoQ Admin</title><link rel="stylesheet" href="style.css"></head>
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Antrean Depot KPK</title>
+<style>
+:root{--bg:#eef2f5;--card:#fff;--ink:#1f2a37;--mut:#6b7a8c;--line:#dfe5ec;--pri:#0f766e;--pri2:#0b5c56;--soft:#e6f4f2}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+header{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}
+h1{font-size:20px;margin:0}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input{padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+.btn{border:0;border-radius:10px;padding:10px 14px;font:inherit;font-weight:700;color:#fff;background:var(--pri);cursor:pointer}
+.btn:disabled{opacity:.5}
+.btn.o{background:#fff;color:var(--pri);border:1.5px solid var(--pri)}
+.btn.r{background:#fff;color:#b42318;border:1.5px solid #b42318}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:var(--card);border-radius:18px;padding:16px;box-shadow:0 4px 18px rgba(20,40,60,.07)}
+.card h2{margin:0 0 2px;font-size:18px}
+.mut{color:var(--mut);font-size:13px}
+.big{width:100%;font-size:18px;padding:14px;margin:12px 0}
+.lbl{font-size:11px;letter-spacing:.06em;color:var(--mut);font-weight:700;margin:12px 0 6px}
+.it{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;font-size:14px}
+.it.on{background:#fef3c7;border-color:#f59e0b}
+.it b{font-size:16px}
+.acts{display:flex;gap:6px}
+.acts .btn{padding:6px 10px;font-size:13px}
+.msg{min-height:20px;font-size:13px;margin:6px 0;color:#b42318}
+.hide{display:none}
+#login{max-width:380px;margin:10vh auto;background:#fff;padding:36px 32px 32px;border-radius:20px;box-shadow:0 10px 40px rgba(15,60,55,.12)}
+#login .logo{display:block;width:56px;height:56px;margin:0 auto 24px}
+#login h1{font-size:30px;font-weight:500;letter-spacing:-.01em;margin:0;text-align:center;color:#0f172a}
+#login .sub{margin:4px 0 28px;font-size:13px;color:#6b7280;text-align:center}
+#login label{display:block;margin:0 0 6px;font-size:13px;font-weight:600;color:#3b4b50}
+#login input{width:100%;height:46px;margin-bottom:18px;background:#f8fafb;outline:none;transition:border-color .15s,box-shadow .15s,background .15s}
+#login input:focus{border-color:var(--pri);background:#fff;box-shadow:0 0 0 4px rgba(15,118,110,.15)}
+.pw{position:relative}
+.pw input{padding-right:48px}
+.pw #eye{position:absolute;right:6px;top:5px;width:36px;height:36px;display:grid;place-items:center;border:0;background:none;color:var(--mut);cursor:pointer;border-radius:8px;padding:0}
+.pw #eye:hover{background:var(--soft);color:var(--pri)}
+#login .msg{margin:-4px 0 14px}
+#login .msg:empty{display:none}
+#login .btn{width:100%;height:48px}
+#tgl{margin-top:2px}
+header{background:#fff;padding:14px 18px;border-radius:16px;box-shadow:0 4px 18px rgba(20,40,60,.06);margin-bottom:18px}
+header h1{font-size:20px;display:flex;align-items:center;gap:10px}
+header h1::before{content:"";width:10px;height:10px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.2)}
+#tgl{margin-top:2px;padding-left:20px}
+
+.card{display:flex;flex-direction:column;border-top:4px solid var(--pri);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,40,60,.1)}
+.card h2{font-size:19px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 4px}
+.stat{background:var(--soft);border-radius:12px;padding:10px 8px;text-align:center}
+.stat b{display:block;font-size:24px;line-height:1.1;color:var(--pri2)}
+.stat span{font-size:11px;color:var(--mut);font-weight:600;letter-spacing:.03em}
+.stat.w{background:#fef3c7}.stat.w b{color:#b45309}
+
+.btn.big{font-size:17px;padding:16px;box-shadow:0 4px 12px rgba(15,118,110,.25)}
+.btn.big:disabled{background:#e5eaf0;color:#9aa6b4;box-shadow:none;cursor:not-allowed;opacity:1}
+.btn.big:not(:disabled):hover{background:var(--pri2)}
+
+.empty{padding:14px;text-align:center;border:1.5px dashed var(--line);border-radius:10px;color:var(--mut);font-size:13px}
+.it b{background:var(--soft);color:var(--pri2);padding:2px 8px;border-radius:6px;margin-right:6px}
+.it.on b{background:#f59e0b;color:#fff}
+.qt{background:#fff;border-radius:18px;padding:16px;margin-top:14px;box-shadow:0 4px 18px rgba(20,40,60,.07)}
+.qt-h{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.qt-h h2{margin:0;font-size:18px}
+.qs{overflow-x:auto}
+.qt table{width:100%;border-collapse:collapse;min-width:820px;font-size:14px}
+.qt th{background:#f1f5f9;text-align:left;padding:10px 12px;font-size:12px;color:#334155;letter-spacing:.03em}
+.qt td{padding:11px 12px;border-bottom:1px solid var(--line)}
+.qt .r{text-align:right}
+.qt tr.nx{background:var(--soft)}
+.qb{margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--pri);color:#fff;font-size:11px;font-weight:700}
+.qc{padding:3px 9px;border-radius:8px;font-size:12px;font-weight:600}
+.qK{background:var(--soft);color:var(--pri2)}
+.qP{background:#e0e7ff;color:#3730a3}
+.qw{font-weight:700;color:#b45309}
+.qe{text-align:center;color:var(--mut);padding:16px}
+
+#loginOverlay{position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,.6);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  color:#fff;text-align:center;padding:24px}
+#loginOverlay[hidden]{display:none}
+.ov-spin{width:44px;height:44px;border:4px solid rgba(255,255,255,.35);
+  border-top-color:#fff;border-radius:50%;animation:ovspin .7s linear infinite}
+.ov-text{font-size:16px;font-weight:600}
+#loginOverlay small{color:#E2E8F0;font-size:13px}
+@keyframes ovspin{to{transform:rotate(360deg)}}
+</style>
+</head>
 <body>
-  <header><h1>DepoQ Admin</h1></header>
-  <section id="cards"><!-- 3 kartu: Ambil Kunci, Pelayanan, Seragam --></section>
-  <section>
-    <p class="note">* data 30 hari ke belakang</p>
-    <table id="wait"><thead><tr>
-      <th>No</th><th>SAP ID</th><th>Nama</th><th>Waktu Tunggu</th>
-      <th>GMV</th><th>Trip</th><th>Active Days</th><th>complain</th>
-    </tr></thead><tbody></tbody></table>
-  </section>
-  <script src="app.js"></script>
-</body></html>
+<div id="login">
+     <svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="14" fill="#0f172a"/><path d="M13 50H25V39H35V28" fill="none" stroke="#fbbf24" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M35 28V21H44V14" fill="none" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0.1 6" opacity="0.55"/><circle cx="35" cy="28" r="7.5" fill="#fbbf24" opacity="0.25"/><circle cx="35" cy="28" r="5" fill="#fbbf24"/></svg>
+  <h1>Sign in</h1>
+  <p class="sub">Enter your username and password below to sign in.</p>
+
+  <label for="user">Username</label>
+  <input id="user" placeholder="Your username" autocomplete="username" autocapitalize="none">
+
+  <label for="key">Password</label>
+  <div class="pw">
+    <input id="key" type="password" placeholder="Enter your password" autocomplete="current-password">
+    <button type="button" id="eye" aria-label="Tampilkan password">
+      <svg class="e-off hide" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+      <svg class="e-open" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.9 10.9 0 0 1 12 19c-7 0-11-7-11-7a19.8 19.8 0 0 1 5.06-5.94M9.9 4.24A10.4 10.4 0 0 1 12 4c7 0 11 7 11 7a19.7 19.7 0 0 1-3.17 4.19M14.12 14.12a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+    </button>
+  </div>
+
+  <div class="msg" id="lmsg"></div>
+  <button class="btn" id="lgo">Login</button>
+</div>
+
+<div class="wrap hide" id="app">
+  <header>
+    <div>
+      <h1>Antrean Depot KPK</h1>
+      <div class="mut" id="tgl"></div>
+    </div>
+    <div class="bar">
+      <input id="loket" placeholder="Loket / nama petugas" style="width:190px">
+      <button class="btn o" id="out">Logout</button>
+    </div>
+  </header>
+  <div class="msg" id="msg"></div>
+  <div class="grid" id="grid"></div>
+  <section class="qt">
+  <div class="qt-h">
+    <h2>Data Antrean Hari Ini</h2>
+    <small class="mut">* Data 30 hari ke belakang</small>
+  </div>
+  <div class="qs">
+    <table>
+      <thead><tr>
+        <th>No</th><th>Sap Id</th><th>Nama</th><th>Layanan</th>
+        <th class="r">Waktu tunggu</th><th class="r">GMV*</th><th class="r">Trip*</th>
+        <th class="r">Active days*</th><th class="r">Total ticket*</th>
+      </tr></thead>
+      <tbody id="qBody"></tbody>
+    </table>
+  </div>
+</section>
+</div>
+
+<div id="loginOverlay" hidden role="status">
+  <div class="ov-spin"></div>
+  <div class="ov-text">Memuat...</div>
+  <small id="ovSlow" hidden>Server sedang merespons, mohon tunggu...</small>
+</div>
+
+<script>
+// ====== KONFIGURASI ======
+const POLL_MS = 5000;
+const SERVICES = [
+  {id:"K", name:"Ambil Kunci"},
+  {id:"P", name:"Pelayanan"},
+  {id:"S", name:"Seragam"}
+];
+// =========================
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+// password hanya dikirim sekali saat login; setelahnya memakai kode sesi (sess)
+let user = "", sess = "", timer = null, busy = false;
+
+// ===== OVERLAY LOGIN =====
+const ov = $("loginOverlay"), ovSlow = $("ovSlow");
+let slowT;
+function showOverlay(on){
+  if (!ov) return;
+  ov.hidden = !on;
+  ovSlow.hidden = true;
+  clearTimeout(slowT);
+  if (on) slowT = setTimeout(() => { ovSlow.hidden = false; }, 3000);
+}
+// =========================
+
+function api(action, data){
+  if (!(window.google && google.script && google.script.run)) return Promise.reject(new Error("Buka halaman ini lewat link Web App."));
+  return new Promise((ok, no) => google.script.run.withSuccessHandler(ok).withFailureHandler(no)
+    .handle(JSON.stringify({action, sess, ...data})));
+}
+
+function start(rows){
+  $("login").classList.add("hide"); $("app").classList.remove("hide");
+  try { $("loket").value = localStorage.dq_loket || user; } catch(e){ $("loket").value = user; }
+  $("tgl").textContent = new Date().toLocaleDateString("id-ID", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+  render(rows); clearInterval(timer); timer = setInterval(refresh, POLL_MS);
+}
+
+function logout(){
+  if (sess) api("logout", {}).catch(() => {});
+  try { sessionStorage.removeItem("dq_sess"); sessionStorage.removeItem("dq_user"); } catch(e){}
+  clearInterval(timer); busy = false; sess = "";
+  $("msg").textContent = "";
+  $("app").classList.add("hide"); $("login").classList.remove("hide"); $("key").value = "";
+}
+
+async function enter(){
+  $("lmsg").textContent = "";
+  const u = $("user").value.trim(), k = $("key").value.trim();
+  if (!u || !k) return;
+  $("lgo").disabled = true;
+  showOverlay(true);
+  try {
+    const l = await api("login", {user:u, key:k});
+    if (!l.ok) throw new Error(l.msg || "Gagal masuk.");
+    sess = l.sess; user = u; $("key").value = "";
+    try { sessionStorage.dq_sess = sess; sessionStorage.dq_user = user; } catch(e){}
+    const r = await api("list", {});
+    if (!r.ok) throw new Error(r.msg || "Gagal masuk.");
+    start(r.rows);
+  } catch(e){ $("lmsg").textContent = e.message || "Koneksi bermasalah."; }
+  showOverlay(false);
+  $("lgo").disabled = false;
+}
+$("lgo").onclick = enter;
+  $("eye").onclick = () => {
+  const show = $("key").type === "password";
+  $("key").type = show ? "text" : "password";
+  document.querySelector(".e-open").classList.toggle("hide", show);
+  document.querySelector(".e-off").classList.toggle("hide", !show);
+  $("eye").setAttribute("aria-label", show ? "Sembunyikan password" : "Tampilkan password");
+};
+$("key").onkeydown = $("user").onkeydown = e => { if (e.key === "Enter") enter(); };
+$("out").onclick = logout;
+$("loket").oninput = () => { try { localStorage.dq_loket = $("loket").value; } catch(e){} };
+
+async function refresh(){
+  if (busy) return;
+  try {
+    const r = await api("list", {});
+    if (r.expired) return logout();
+    if (r.ok) { render(r.rows); $("msg").textContent = ""; }
+  }
+  catch(e){ $("msg").textContent = "Koneksi terputus, mencoba lagi..."; }
+}
+
+function render(rows){
+  $("grid").innerHTML = SERVICES.map(s => {
+    const mine = rows.filter(r => r.svc === s.id).sort((a,b) => a.seq - b.seq);
+    const calling = mine.filter(r => r.status === "DIPANGGIL");
+    const wait = mine.filter(r => r.status === "MENUNGGU");
+    const done = mine.filter(r => r.status === "SELESAI").length;
+    return `<div class="card">
+      <h2>${s.name}</h2>
+      <div class="stats">
+        <div class="stat w"><b>${wait.length}</b><span>MENUNGGU</span></div>
+        <div class="stat"><b>${done}</b><span>SELESAI</span></div>
+        <div class="stat"><b>${mine.length}</b><span>TOTAL</span></div>
+      </div>
+      <button class="btn big" data-call="${s.id}" ${wait.length ? "" : "disabled"}>Panggil${wait.length ? " (" + esc(wait[0].no) + ")" : ""}</button>
+      <div class="lbl">SEDANG DIPANGGIL</div>
+      ${calling.length ? calling.map(r => `<div class="it on"><span><b>${esc(r.no)}</b> ${esc(r.nama)}</span>
+        <span class="acts"><button class="btn o" data-rec="${esc(r.no)}">Ulangi</button><button class="btn" data-fin="${esc(r.no)}" data-st="SELESAI">Selesai</button>
+        <button class="btn r" data-fin="${esc(r.no)}" data-st="LEWAT">Lewat</button></span></div>`).join("") : '<div class="empty">Belum ada yang dipanggil</div>'}
+      <div class="lbl">MENUNGGU</div>
+      ${wait.length ? wait.slice(0,8).map(r => `<div class="it"><span><b>${esc(r.no)}</b> ${esc(r.nama)}</span><span class="mut">${esc(r.sap)}</span></div>`).join("") : '<div class="empty">Antrean kosong</div>'}
+      ${wait.length > 8 ? `<div class="mut">+${wait.length - 8} lainnya</div>` : ""}
+    </div>`;
+  }).join("");
+}
+
+$("grid").onclick = async e => {
+  const b = e.target.closest("button"); if (!b || busy) return;
+  busy = true; b.disabled = true; $("msg").textContent = "";
+  try {
+    let r;
+    if (b.dataset.call) r = await api("call", {svc: b.dataset.call, loket: $("loket").value.trim()});
+    else if (b.dataset.rec) r = await api("recall", {no: b.dataset.rec});
+    else r = await api("finish", {no: b.dataset.fin, status: b.dataset.st});
+    if (r.expired) return logout();
+    if (!r.ok) $("msg").textContent = r.msg || "Gagal.";
+  } catch(err){ $("msg").textContent = "Koneksi bermasalah, coba lagi."; }
+  busy = false; refresh();
+};
+// ===== TABEL REVIEW ANTREAN =====
+const TS_FIELD = "ts";   // field waktu daftar pada rows dari "list"
+const perfCache = {};
+let qRows = [], perfBusy = false;
+const fmtWait = m => m < 60 ? m + " mnt" : Math.floor(m/60) + "j " + (m%60) + "m";
+const fmtGmv = v => (v === undefined || v === null || v === "") ? "-" : "Rp " + (v/1e6).toFixed(1).replace(".", ",") + " jt";
+const dash = v => (v === undefined || v === null || v === "") ? "-" : v;
+
+function drawQ(){
+  const tb = $("qBody"), now = Date.now(), first = {};
+  if (!qRows.length){ tb.innerHTML = '<tr><td colspan="9" class="qe">Tidak ada antrean menunggu</td></tr>'; return; }
+  tb.innerHTML = qRows.map(r => {
+    const nx = !first[r.svc]; first[r.svc] = 1;
+    const p = perfCache[String(r.sap).trim()] || [];
+    const t = new Date(r[TS_FIELD]).getTime();
+    const w = isNaN(t) ? "-" : fmtWait(Math.max(0, Math.floor((now - t) / 60000)));
+    const svc = (SERVICES.find(s => s.id === r.svc) || {}).name || r.svc;
+    return `<tr${nx ? ' class="nx"' : ""}><td>${esc(r.no)}</td><td>${esc(r.sap)}</td>
+      <td>${esc(r.nama)}${nx ? '<span class="qb">Berikutnya</span>' : ""}</td>
+      <td><span class="qc q${esc(r.svc)}">${esc(svc)}</span></td>
+      <td class="r">${w}</td><td class="r">${fmtGmv(p[0])}</td><td class="r">${esc(dash(p[1]))}</td>
+      <td class="r">${esc(dash(p[2]))}</td><td class="r${Number(p[3]) >= 3 ? " qw" : ""}">${esc(dash(p[3]))}</td></tr>`;
+  }).join("");
+}
+
+function renderQ(rows){
+  qRows = rows.filter(r => (r.svc === "K" || r.svc === "P") && r.status === "MENUNGGU")
+    .sort((a, b) => (new Date(a[TS_FIELD]) - new Date(b[TS_FIELD])) || (a.seq - b.seq));
+  drawQ();
+  const miss = qRows.map(r => String(r.sap).trim()).filter(s => !(s in perfCache));
+  if (miss.length && !perfBusy){
+    perfBusy = true;
+    api("qperf", {saps: miss})
+      .then(r => { if (r.ok){ miss.forEach(s => perfCache[s] = r.perf[s] || null); drawQ(); } })
+      .catch(() => {})
+      .then(() => { perfBusy = false; });
+  }
+}
+
+const _render = render;
+render = function(rows){ _render(rows); renderQ(rows); };
+
+// pulihkan sesi setelah reload halaman (tanpa menyimpan password)
+try {
+  if (sessionStorage.dq_sess){
+    sess = sessionStorage.dq_sess; user = sessionStorage.dq_user || "";
+    api("list", {}).then(r => r.ok ? start(r.rows) : logout()).catch(() => {});
+  }
+} catch(e){}
+</script>
+</body>
+</html>
